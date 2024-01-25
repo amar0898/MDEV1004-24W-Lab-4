@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geolocation API Lab-4</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+</head>
+<body>
+    <h1>Geolocation API</h1>
+    <h2>Amardeep Amardeep - 200567064</h2>
+    <p>Click the button to get your coordinates</p>
+    <button onclick="geolocation()">Click ME!</button>
+    <p id="test"></p>
+    
+    <div id="map" style="width: 100%; height: 400px;"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        var x = document.getElementById('test');
+        var mymap; 
+
+        function geolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by the browser";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+
+            
+            if (!mymap) {
+                
+                mymap = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(mymap);
+            } else {
+                
+                mymap.setView([position.coords.latitude, position.coords.longitude], 13);
+            }
+
+    
+            L.marker([position.coords.latitude, position.coords.longitude]).addTo(mymap)
+                .bindPopup("Your Current Location").openPopup();
+        }
+    </script>
+</body>
+</html>
